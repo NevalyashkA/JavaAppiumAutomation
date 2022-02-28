@@ -27,4 +27,13 @@ public class MainClassTest{
             System.out.println("Это число меньше 45");
         }
     }
+    @Test
+    public void testGetClassString()
+    {
+        if(mMainClass.getClassString().contains("hello") || mMainClass.getClassString().contains("Hello")){
+            System.out.println("Метод возвращает подстроку hello");
+        }else {
+            System.out.println("Метод не возвращает подстроку hello");
+        }
+    }
 }
