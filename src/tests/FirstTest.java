@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,6 +16,8 @@ import java.util.List;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+
+import static javax.swing.text.html.CSS.getAttribute;
 
 public class FirstTest {
 
@@ -170,6 +171,36 @@ public class FirstTest {
                 "One article found",
                 10
         );
+    }
+
+    @Test
+    public void testAssertWordsInTheSearchEx4() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "The item didn't load",
+                5
+        );
+        List<WebElement> webElementList = new ArrayList<WebElement>(
+                driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']")));
+
+        for(WebElement element : webElementList) {
+            Assert.assertTrue(
+                    "We see unexpected title",
+                    element.getAttribute("text").contains("Java")
+            );
+        }
+
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds){
