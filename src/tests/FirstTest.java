@@ -5,12 +5,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -134,6 +137,40 @@ public class FirstTest {
         );
 
     }
+    @Test
+    public void testCancelSearchEx3() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+        boolean articleTrue = waitForListElement(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']"),
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Cannot find search input",
+                10
+        );
+        Assert.assertTrue(
+                "One article found",
+                articleTrue
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']"),
+                "One article found",
+                10
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds){
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -175,5 +212,8 @@ public class FirstTest {
                 text,
                 text_content
         );
+    }
+    private boolean waitForListElement(By by_parent, By by, String error_message, long timeoutInSeconds){
+        return waitForElementPresent(by_parent, error_message, timeoutInSeconds).findElements(by).size() > 1;
     }
 }
