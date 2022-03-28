@@ -597,6 +597,30 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void assertElementPresentEX6 () {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
+                5
+        );
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find title"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds){
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message+"\n");
@@ -704,5 +728,13 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String error_message,  long timeoutInSeconds){
         WebElement element = waitForElementPresent(by,error_message,timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+    private void assertElementPresent(By by,String error_message){
+        WebElement element = waitForElementPresent(by,error_message,0);
+
+        if (!element.isDisplayed()){
+            String default_message = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
     }
 }
