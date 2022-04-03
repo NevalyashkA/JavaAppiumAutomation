@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.CoreTestCase;
+import ui.ArticlePageObject;
 import ui.MainPageObject;
+import ui.MyListsPageObject;
+import ui.NavigationUI;
 import ui.SearchPageObject;
 
 public class FirstTest extends CoreTestCase {
@@ -43,28 +46,14 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCompareArticleTitle(){
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
-                5
-        );
-        WebElement title_element = mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot article title",
-                15
-        );
-        String article_title = title_element.getAttribute("text");
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        String article_title = articlePageObject.getArticleTitle();
+
         Assert.assertEquals(
                 "We see unexpected title",
                 "Java (programming language)",
@@ -73,32 +62,14 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testSwipeArticle(){
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Appium",
-                "Cannot find search input",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Appium'",
-                15
-        );
-        mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot article title",
-                15
-        );
-        mainPageObject.swipeUpToElement(
-                By.xpath("//*[@text='View page in browser']"),
-                "Cannot find the end of the article",
-                20
-        );
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Appium");
+        searchPageObject.clickByArticleWithSubstring("Appium");
+        articlePageObject.waitForTitleElement();
+        articlePageObject.swipeToFooter();
     }
 
     @Test
@@ -183,84 +154,24 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveFirstArticleToMyList(){
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
-                "Cannot find search input",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
-                5
-        );
-        mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot article title",
-                15
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
-                "Cannot find btn to option article",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Add to reading list']"),
-                "Cannot find option to add article 'Add to reading list'",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/onboarding_button"),
-                "Cannot find 'Got it' tip overlay",
-                5
-        );
-        mainPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/text_input"),
-                "Cannot find input to set name of articles folder",
-                5
-        );
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        NavigationUI navigationUI = new NavigationUI(driver);
+        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
 
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        articlePageObject.waitForTitleElement();
+
+        String article_title = articlePageObject.getArticleTitle();
         String name_of_folder = "Learning programming";
-        mainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/text_input"),
-                name_of_folder,
-                "Cannot put text into articles folder input",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='OK']"),
-                "Cannot press ok btn",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Cannot close article, cannot find X link",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
-                "Cannot close navigation btn 'My lists'",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='"+ name_of_folder +"']"),
-                "Cannot find created folder",
-                5
-        );
-        mainPageObject.swipeElementToLeft(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot saved article"
-        );
-        mainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot delete saved article",
-                5
-        );
+
+        articlePageObject.addArticleToMyList(name_of_folder);
+        articlePageObject.closeArticle();
+        navigationUI.clickMyLists();
+        myListsPageObject.openFolderByName(name_of_folder);
+        myListsPageObject.swipeByArticleToDelete(article_title);
     }
     @Test
     public void testAmountOfNotEmptySearch(){
