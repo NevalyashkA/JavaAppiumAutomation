@@ -25,7 +25,7 @@ public class CoreTestCase extends TestCase {
         capabilities.setCapability("app","/Users/u18285002/IdeaProjects/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL(AppiumUrl),capabilities);
-        driver.rotate(ScreenOrientation.PORTRAIT);
+        this.rotateScreenPortrait();
     }
 
     @Override
@@ -33,5 +33,16 @@ public class CoreTestCase extends TestCase {
         driver.quit();
         super.tearDown();
     }
+
+    protected void rotateScreenLandscape(){
+        driver.rotate(ScreenOrientation.LANDSCAPE);
+    }
+    protected void rotateScreenPortrait(){
+        driver.rotate(ScreenOrientation.PORTRAIT);
+    }
+    protected void backgroundApp(int seconds){
+        driver.runAppInBackground(seconds);
+    }
+
 
 }
