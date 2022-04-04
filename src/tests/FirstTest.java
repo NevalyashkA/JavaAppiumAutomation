@@ -259,4 +259,15 @@ public class FirstTest extends CoreTestCase {
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         searchPageObject.assertThereIsResultOfSearch();
     }
+
+    @Test
+    public void testAssertElementPresentEX9() {
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.waitForElementByTitleAndDescription("Java","Island of Indonesia");
+        searchPageObject.waitForElementByTitleAndDescription("JavaScript","Programming language");
+        searchPageObject.waitForElementByTitleAndDescription("Java (programming language)","Object-oriented programming language");
+        searchPageObject.waitForElementByTitleAndDescription("123","Object-oriented programming language");
+    }
 }

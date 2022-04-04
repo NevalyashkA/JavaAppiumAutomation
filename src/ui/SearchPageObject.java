@@ -11,6 +11,7 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "//android.widget.LinearLayout[./android.widget.TextView[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{TITLE}']][./android.widget.TextView[@resource-id='org.wikipedia:id/page_list_item_description'][@text='{DESCRIPTION}']]",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
 
@@ -22,6 +23,11 @@ public class SearchPageObject extends MainPageObject {
     private static String getResultSearchElement (String substring){
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}",substring);
     }
+    private static String getResultSearchElement (String title, String description){
+
+        return SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{TITLE}",title).replace("{DESCRIPTION}",description);
+    }
+
     public void initSearchInput (){
         this.waitForElementPresent(By.xpath(SEARCH_INIT_ELEMENT),"Cannot find search input after clicking search init element");
         this.waitForElementAndClick(By.xpath(SEARCH_INIT_ELEMENT),"Cannot find and click search init element",5);
@@ -62,5 +68,12 @@ public class SearchPageObject extends MainPageObject {
     }
     public void  assertThereIsResultOfSearch(){
         this.assertElementPresent(By.xpath(SEARCH_RESULT_ELEMENT),"Cannot find empty result element");
+    }
+    public void waitForElementByTitleAndDescription(String title, String description){
+        String search_result_xpath = getResultSearchElement(title, description);
+        this.waitForElementPresent(
+                By.xpath(search_result_xpath),
+                "Cannot find search result with title: " + title + " and description: " + description);
+
     }
 }
