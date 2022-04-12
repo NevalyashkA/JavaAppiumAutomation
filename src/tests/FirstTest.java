@@ -75,12 +75,12 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testAssertElementHasText() {
         mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
+                "id:org.wikipedia:id/search_container",
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
         mainPageObject.assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
+                "id:org.wikipedia:id/search_src_text",
                 "Search…",
                 "Cannot article title",
                 15
@@ -105,18 +105,18 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testAssertWordsInTheSearchEx4() {
         mainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
+                "id:org.wikipedia:id/search_container",
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
         mainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/search_src_text"),
+                "id:org.wikipedia:id/search_src_text",
                 "Java",
                 "Cannot find search input",
                 5
         );
         mainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']",
                 "The item didn't load",
                 5
         );
