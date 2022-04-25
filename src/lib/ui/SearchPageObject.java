@@ -71,7 +71,7 @@ abstract public class SearchPageObject extends MainPageObject {
         String search_result_xpath = getResultSearchElement(title, description);
         this.waitForElementPresent(
                search_result_xpath,
-                "Cannot find search result with title: " + title + " and description: " + description);
+                "Cannot find search result with title: '" + title + "' and description: '" + description + "'.");
 
     }
 }
