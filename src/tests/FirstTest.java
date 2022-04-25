@@ -1,20 +1,24 @@
 package tests;
 
+import lib.Platform;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lib.CoreTestCase;
-import ui.ArticlePageObject;
-import ui.MainPageObject;
-import ui.MyListsPageObject;
-import ui.NavigationUI;
-import ui.SearchPageObject;
+import lib.ui.ArticlePageObject;
+import lib.ui.MainPageObject;
+import lib.ui.MyListsPageObject;
+import lib.ui.NavigationUI;
+import lib.ui.SearchPageObject;
 
 public class FirstTest extends CoreTestCase {
 
@@ -27,7 +31,7 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSearch(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -35,7 +39,7 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testCancelSearch(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.waitForCancelButtonToAppear();
@@ -45,13 +49,14 @@ public class FirstTest extends CoreTestCase {
     }
 
     @Test
-    public void testCompareArticleTitle(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+    public void testCompareArticleTitle () throws InterruptedException{
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        Thread.sleep(5000);
         String article_title = articlePageObject.getArticleTitle();
 
         Assert.assertEquals(
@@ -61,13 +66,14 @@ public class FirstTest extends CoreTestCase {
         );
     }
     @Test
-    public void testSwipeArticle(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+    public void testSwipeArticle() throws InterruptedException{
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine("Appium");
-        searchPageObject.clickByArticleWithSubstring("Appium");
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        Thread.sleep(5000);
         articlePageObject.waitForTitleElement();
         articlePageObject.swipeToFooter();
     }
@@ -89,7 +95,7 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testCancelSearchEx3() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
 
@@ -132,30 +138,39 @@ public class FirstTest extends CoreTestCase {
 
     }
 
+
     @Test
     public void testSaveFirstArticleToMyList(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
-        NavigationUI navigationUI = new NavigationUI(driver);
-        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
+
+        String name_of_folder = "Learning programming";
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
         articlePageObject.waitForTitleElement();
-
         String article_title = articlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
 
-        articlePageObject.addArticleToMyList(name_of_folder);
-        articlePageObject.closeArticle();
-        navigationUI.clickMyLists();
-        myListsPageObject.openFolderByName(name_of_folder);
+        if(Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToMyList(name_of_folder);
+            articlePageObject.closeArticle();
+            navigationUI.clickMyLists();
+            myListsPageObject.openFolderByName(name_of_folder);
+        }else {
+            articlePageObject.addArticlesToMySaved();
+            articlePageObject.closeArticle();
+            searchPageObject.clickCancelSearch();
+            navigationUI.clickMyLists();
+            myListsPageObject.cloceOverflowSyncMenu();
+        }
         myListsPageObject.swipeByArticleToDelete(article_title);
     }
     @Test
     public void testAmountOfNotEmptySearch(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         String search_line = "Linkin park discography";
 
         searchPageObject.initSearchInput();
@@ -169,7 +184,7 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String search_line = "zxcasdqwe";
         searchPageObject.typeSearchLine(search_line);
@@ -178,8 +193,8 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testChangeScreenOrientationOnSearchResults(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -204,7 +219,7 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCheckScreenArticleBackground(){
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -215,10 +230,10 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveFirstArticleToMyListEX5() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
-        NavigationUI navigationUI = new NavigationUI(driver);
-        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -253,7 +268,7 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAssertElementPresentEX6() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
@@ -262,7 +277,7 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAssertElementPresentEX9() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.waitForElementByTitleAndDescription("Java","Island of Indonesia");

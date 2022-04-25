@@ -1474,19 +1474,19 @@
 		<data>
 		+mXjHCzGj8kESvD40wHOScuZzag=
 		</data>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirror.init.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirror.init.js</key>
 		<data>
 		feMC3iFeDXEVOGU0aBLX/x2ZEtU=
 		</data>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirror.init.less</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirror.init.less</key>
 		<data>
 		uRaEgOZsJxFiZ+dR85RWwwCXDIo=
 		</data>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirrorAction.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirrorAction.js</key>
 		<data>
 		ks/WRynT6cHETzA8Eo+tkk8if/A=
 		</data>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirrorTool.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirrorTool.js</key>
 		<data>
 		XD9S6O6Jlal8lEfxg7hu85kZnVA=
 		</data>
@@ -5722,28 +5722,28 @@
 			mw3DLNGhEmwJ0PnsIWo6a5GVyEgi6ja8cNZ3S5hGF2g=
 			</data>
 		</dict>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirror.init.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirror.init.js</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			jB5T/LkPZGhgqZlOlctxIIcG1qxzEa6sBaLDs3ctlDc=
 			</data>
 		</dict>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirror.init.less</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirror.init.less</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			3JZmrB3Ag7lAc0Cz3MfOve3Rjv6BWn892+CcGFVDf0E=
 			</data>
 		</dict>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirrorAction.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirrorAction.js</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			3iDwuiJ6BxJh7goP0uAmBMKEMXDXd1Hj/kZb3Hmq5X0=
 			</data>
 		</dict>
-		<key>assets/codemirror/resources/modules/ve-cm/ve.ui.CodeMirrorTool.js</key>
+		<key>assets/codemirror/resources/modules/ve-cm/ve.lib.ui.CodeMirrorTool.js</key>
 		<dict>
 			<key>hash2</key>
 			<data>

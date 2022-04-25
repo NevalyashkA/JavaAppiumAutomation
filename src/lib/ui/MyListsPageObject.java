@@ -1,14 +1,14 @@
-package ui;
-
-import org.openqa.selenium.By;
+package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject{
-    private static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-            ITEM_OVERFLOW_MENU = "id:org.wikipedia:id/item_overflow_menu";
+abstract public class MyListsPageObject extends MainPageObject{
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            ITEM_OVERFLOW_MENU,
+            CLOSE_OVERFLOW_SYNC_MENU;
 
     private static String getFolderXpathByName(String name_of_folder){
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
@@ -59,6 +59,16 @@ public class MyListsPageObject extends MainPageObject{
                 getSavedArticleXpathByTitle(article_title),
                 "Cannot saved article"
         );
+        if(Platform.getInstance().isIOS()){
+            this.waitForElementAndClick(ITEM_OVERFLOW_MENU,
+                    "Cannot delete saved article in list",10);
+        }
         this.waitForArticleToDisappearByTitle(article_title);
+    }
+    public void cloceOverflowSyncMenu (){
+        this.waitForElementAndClick(
+                CLOSE_OVERFLOW_SYNC_MENU,
+                "Cannot close overfolew sync menu in list",
+                10);
     }
 }
